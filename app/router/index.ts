@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-01 15:37:59
  * @LastEditors: bin
- * @LastEditTime: 2023-11-09 14:24:18
+ * @LastEditTime: 2023-11-15 11:21:53
  * @objectDescription: 入口文件
  */
 /*
@@ -18,7 +18,7 @@ import LoginController from '../controller/LoginController'
 import AuthMiddleware from '../middleware/AuthMiddleware'
 const router = new koaRouter({ prefix: '/admin' })
 
-router.get('/login', LoginController.login)
+router.post('/login', LoginController.login)
 
 router.use(AuthMiddleware)
 router.get('/userList', IndexController.getUserList)
