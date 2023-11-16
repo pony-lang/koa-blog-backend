@@ -13,7 +13,7 @@
  * @objectDescription: 入口文件
  */
 import koaRouter from 'koa-router'
-import IndexController from '../controller/IndexController'
+import IndexController from '../controller/UserController/IndexController'
 import LoginController from '../controller/LoginController/LoginController'
 import AuthMiddleware from '../middleware/AuthMiddleware'
 const router = new koaRouter({ prefix: '/admin' })
