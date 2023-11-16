@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-10 14:42:14
  * @LastEditors: bin
- * @LastEditTime: 2023-11-15 16:51:59
+ * @LastEditTime: 2023-11-16 10:49:08
  * @objectDescription: 入口文件
  */
 import { Context } from 'koa';
@@ -15,19 +15,11 @@ import type * as Login from './types/login'
  */
 class LoginController {
     async login(ctx: Context) {
-        const { username, password }: Login.LoginType = ctx.request.body as Login.LoginType
-        console.log(username, password);
-        const res = await UserModel.findOne({ username, password })
+        const requestBody = ctx.request.body as unknown as Login.LoginType
+        const { username, password } = requestBody
+        const res = await UserModel.findOne({ username, password})
         if (!res) {
-            fail(ctx, '用户不存在', null, 401)
-            return
-        }
-        if (res?.password !== '231') {
-            fail(ctx, '密码错误', null, 401)
-            return
-        }
-        if (res?.username !== 'saf') {
-            fail(ctx, '用户名错误', null, 401)
+            fail(ctx, '用户名或密码错误', null, 401)
             return
         }
         const token = sign({ username: res?.username })
