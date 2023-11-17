@@ -11,3 +11,9 @@ export interface UserListType {
   offset: number
   limit: number
 }
+export interface UserType {
+  username: string
+  email: string
+  password: string
+  usertype: number
+}

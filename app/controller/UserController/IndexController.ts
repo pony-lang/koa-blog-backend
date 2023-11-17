@@ -2,12 +2,12 @@
  * @Author: bin
  * @Date: 2023-11-01 15:37:52
  * @LastEditors: bin
- * @LastEditTime: 2023-11-17 13:58:03
+ * @LastEditTime: 2023-11-17 17:13:01
  * @objectDescription: 入口文件
  */
 import { Context } from "koa";
 import { UserModel } from '../../db/model/ModelUser'
-import { guid} from '../../utils/guid'
+import { guid } from '../../utils/guid'
 import { paginate } from '../../utils/paginate'
 import { fail, success } from "../../utils/response";
 import * as User from "./types/user";
@@ -37,7 +37,7 @@ class IndexController {
                 $regex: email
             }
         }).skip(offset - 1).limit(limit)
-        if(!res) {
+        if (!res) {
             fail(ctx, '查询失败', null, 401)
             return
         }
@@ -51,13 +51,23 @@ class IndexController {
         console.log(count, res);
     }
     async createUser(ctx: Context) {
-        UserModel.create({
-            username: 'saf',
-            password: '231',
-            email: '12@qq.com',
+        const requestBody = ctx.request.body as User.UserType
+        if (!requestBody) {
+            fail(ctx, '请求参数错误', null, 400)
+            return
+        }
+        const { username, password, email } = requestBody
+        const res = await UserModel.create({
+            username,
+            password,
+            email,
             user_id: guid()
         })
-        ctx.body = '成功'
+        if (!res) {
+            fail(ctx, '创建失败', null, 401)
+            return
+        }
+        success(ctx, res)
     }
 }
 
