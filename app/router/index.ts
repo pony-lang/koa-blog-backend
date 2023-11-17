@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-01 15:37:59
  * @LastEditors: bin
- * @LastEditTime: 2023-11-15 11:21:53
+ * @LastEditTime: 2023-11-17 15:06:42
  * @objectDescription: 入口文件
  */
 /*
@@ -19,7 +19,7 @@ import AuthMiddleware from '../middleware/AuthMiddleware'
 const router = new koaRouter({ prefix: '/admin' })
 
 router.post('/login', LoginController.login)
-
+router.get('/captcha', LoginController.captcha)
 router.use(AuthMiddleware)
 router.get('/userList', IndexController.getUserList)
 router.get('/createUser', IndexController.createUser)
