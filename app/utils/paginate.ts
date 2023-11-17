@@ -1,3 +1,10 @@
+/*
+ * @Author: bin
+ * @Date: 2023-11-15 11:29:17
+ * @LastEditors: bin
+ * @LastEditTime: 2023-11-17 11:59:21
+ * @objectDescription: 分页工具
+ */
 /**
  * 分页函数
  * @param total 总数
@@ -5,23 +12,15 @@
  * @param currentPage 当前页码
  * @returns 分页结果
  */
-function paginate(total: number, pageSize: number, currentPage: number): { total: number, pages: number, pageSize: number, current_page: number, prev_page: number, next_page: number, records: any[] } {
-    const pages = Math.ceil(total / pageSize)
+function paginate(total: number, pageSize: number, currentPage: number): { total: number, totalPage: number, pageSize: number, current_page: number} {
+    const totalPage = Math.ceil(total / pageSize)
     const current_page = currentPage > 0 ? currentPage : 1
-    const prev_page = current_page > 1 ? current_page - 1 : current_page
-    const next_page = current_page < pages ? current_page + 1 : current_page
-
-    const start = (current_page - 1) * pageSize
-    const end = start + pageSize
 
     return {
         total,
-        pages,
+        totalPage,
         pageSize,
-        current_page,
-        prev_page,
-        next_page,
-        records: Array.from({ length: pageSize }, (_, index) => start + index)
+        current_page
     };
 }
 

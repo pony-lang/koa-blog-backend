@@ -3,7 +3,7 @@
  * @Date: 2023-11-10 14:42:14
  * @LastEditors: bin
  * @LastEditTime: 2023-11-16 14:58:21
- * @objectDescription: 入口文件
+ * @objectDescription: 登录文件
  */
 import { Context, Request } from 'koa';
 import { UserModel } from '../../db/model/ModelUser'
