@@ -264,6 +264,11 @@
   "resolved" "https://registry.npmmirror.com/arg/-/arg-4.1.3.tgz"
   "version" "4.1.3"
 
+"async-validator@^4.2.5":
+  "integrity" "sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg=="
+  "resolved" "https://registry.npmmirror.com/async-validator/-/async-validator-4.2.5.tgz"
+  "version" "4.2.5"
+
 "babel@^6.23.0":
   "integrity" "sha512-ZDcCaI8Vlct8PJ3DvmyqUz+5X2Ylz3ZuuItBe/74yXosk2dwyVo/aN7MCJ8HJzhnnJ+6yP4o+lDgG9MBe91DLA=="
   "resolved" "https://registry.npmmirror.com/babel/-/babel-6.23.0.tgz"
