@@ -22,6 +22,6 @@ router.post('/login', LoginController.login)
 router.get('/captcha', LoginController.captcha)
 router.use(AuthMiddleware)
 router.get('/userList', IndexController.getUserList)
-router.get('/createUser', IndexController.createUser)
+router.post('/createUser', IndexController.createUser)
 
 export default router

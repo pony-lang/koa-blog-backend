@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-01 15:37:52
  * @LastEditors: bin
- * @LastEditTime: 2023-11-17 17:13:01
+ * @LastEditTime: 2023-11-20 09:16:40
  * @objectDescription: 入口文件
  */
 import { Context } from "koa";
@@ -57,6 +57,10 @@ class IndexController {
             return
         }
         const { username, password, email } = requestBody
+        if (!username ||!password ||!email || !requestBody.usertype) {
+            fail(ctx, '请求参数错误', null, 400)
+            return
+        }
         const res = await UserModel.create({
             username,
             password,
@@ -67,7 +71,7 @@ class IndexController {
             fail(ctx, '创建失败', null, 401)
             return
         }
-        success(ctx, res)
+        success(ctx, [])
     }
 }
 
