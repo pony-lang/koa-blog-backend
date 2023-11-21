@@ -5,7 +5,7 @@
  * @LastEditTime: 2023-11-21 10:07:01
  * @objectDescription: 入口文件
  */
-import { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 export const UserSchema = new Schema({
     username: {
         type: String,
@@ -37,5 +37,5 @@ export const UserSchema = new Schema({
         type: String,
         require: true
     },
-    
 })
+export const UserModel = mongoose.model('User', UserSchema)

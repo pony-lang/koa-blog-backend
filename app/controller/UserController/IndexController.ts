@@ -6,7 +6,7 @@
  * @objectDescription: 入口文件
  */
 import { Context } from "koa";
-import { UserModel } from '../../db/model/ModelUser'
+import { UserModel } from '../../db/schema/SchemaUser'
 import { guid } from '../../utils/guid'
 import { paginate } from '../../utils/paginate'
 import { fail, success } from "../../utils/response";
@@ -50,7 +50,7 @@ class IndexController {
         })
     }
     async createUser(ctx: Context) {
-        const requestBody = ctx.request.body as User.UserType
+        const requestBody = ctx.request['body'] as User.UserType
         const { username, password, email, nickname } = requestBody
         if (!username ||!password ||!email || !nickname || !requestBody.usertype) {
             fail(ctx, '请求参数错误', null, 400)
