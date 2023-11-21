@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-01 15:37:52
  * @LastEditors: bin
- * @LastEditTime: 2023-11-20 16:53:22
+ * @LastEditTime: 2023-11-21 09:28:42
  * @objectDescription: 入口文件
  */
 import { Context } from "koa";
@@ -51,13 +51,21 @@ class IndexController {
     }
     async createUser(ctx: Context) {
         const requestBody = ctx.request.body as User.UserType
-        const { username, password, email } = requestBody
-        if (!username ||!password ||!email || !requestBody.usertype) {
+        const { username, password, email, nickname } = requestBody
+        if (!username ||!password ||!email || !nickname || !requestBody.usertype) {
             fail(ctx, '请求参数错误', null, 400)
+            return
+        }
+        const resUser = await UserModel.findOne({
+            username
+        })
+        if (resUser) {
+            fail(ctx, '用户名已存在', null, 400)
             return
         }
         const res = await UserModel.create({
             username,
+            nickname,
             password,
             email,
             user_id: guid()
