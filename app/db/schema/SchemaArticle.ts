@@ -15,13 +15,13 @@ export const ArticleSchema = new Schema({
         ref: 'User',
         required: true
     },
-    article_id: {
-        type: String,
-        require: true
-    },
     createAt: {
         type: Date,
         default: Date.now
     },
+    tags: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tag'
+    }],
 })
 export const ArticleModel = mongoose.model('Article', ArticleSchema)

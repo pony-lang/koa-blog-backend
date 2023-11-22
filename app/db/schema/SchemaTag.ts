@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 export const SchemaTag = new mongoose.Schema({
-    name: {
+    tag_name: {
         type: String,
         required: true,
         unique: true,
