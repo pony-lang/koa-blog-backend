@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-21 11:31:17
  * @LastEditors: bin
- * @LastEditTime: 2023-11-22 17:27:26
+ * @LastEditTime: 2023-11-23 11:35:27
  * @objectDescription: 入口文件
  */
 import { Context } from 'koa'
@@ -23,31 +23,33 @@ class ArticleIndexController {
             tag_name: {
                 $in: tags
             }
-        }).select('tag_name').exec()
+        }).exec()
         // 已存在的标签
-        const existingTagNames = existingTags.map((tag) => tag.tag_name.toString());
+        const existingTagIds = existingTags.map((tag) => tag._id.toString());
         // 不存在的标签
-        tags.filter((tag) => !existingTagNames.includes(tag)).forEach(async (tag1) => {
-            console.log(tag1, 'tag');
+        const existingTagNames = existingTags.map((tag) => tag.tag_name.toString());
+        const noTag = tags.filter((tag) => !existingTagNames.includes(tag))
+        noTag.forEach(async (tag) => {
             let newTagRes = await TagModel.create({
-                tag_name: tag1
+                tag_name: tag
             })
-            console.log(newTagRes, 'newTagRes');
-            existingTagNames.push(newTagRes.tag_name.toString())
+            existingTagIds.push(newTagRes._id.toString())
         })
-
-        // console.log(existingTagNames, 'existingTagNames');
-        // const articleRes = await ArticleModel.create({
-        //     title,
-        //     content,
-        //     author,
-        //     tags: existingTagNames,
-        // })
-        // if (articleRes) {
-        //     success(ctx, [], '创建成功', 200)
-        // } else {
-        //     fail(ctx, '创建失败', null, 500)
-        // }
+        const articleRes = await ArticleModel.create({
+            title,
+            content,
+            author,
+            tags: existingTagIds
+        })
+        if (articleRes) {
+            success(ctx, [], '创建成功', 200)
+        } else {
+            fail(ctx, '创建失败', null, 500)
+        }
+    }
+    async getArticleList(ctx: Context) {
+        const requestBody = ctx.request['body'] as Article.ArticleListType
+        
     }
 }
 export default new ArticleIndexController

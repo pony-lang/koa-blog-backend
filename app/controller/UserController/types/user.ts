@@ -6,8 +6,8 @@
  * @objectDescription: 入口文件
  */
 export interface UserListType {
-  username: string
-  email: string
+  username?: string
+  email?: string
   offset: number
   limit: number
 }

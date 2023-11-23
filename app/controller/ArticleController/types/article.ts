@@ -4,3 +4,9 @@ export interface ArticleType  {
     author: string
     tags: string[]
 }
+export interface ArticleListType {
+    offset: number
+    limit: number
+    title?: string
+    tags?: string[]
+}
