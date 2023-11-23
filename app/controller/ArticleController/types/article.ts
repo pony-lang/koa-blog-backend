@@ -8,5 +8,5 @@ export interface ArticleListType {
     offset: number
     limit: number
     title?: string
-    tags?: string[]
+    tags?: string
 }

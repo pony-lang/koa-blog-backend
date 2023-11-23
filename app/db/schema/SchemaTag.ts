@@ -5,6 +5,10 @@ export const SchemaTag = new mongoose.Schema({
         required: true,
         unique: true,
         trim: true,
+    },
+    createAt: {
+        type: Date,
+        default: Date.now()
     }
 })
 export const TagModel = mongoose.model('Tag', SchemaTag)

@@ -32,5 +32,6 @@ router.post('/createUser', IndexController.createUser)
 
 // 文章模块
 router.post('/createArticle', ArticleIndexController.createArticle)
+router.get('/getArticle', ArticleIndexController.getArticleList)
 
 export default router

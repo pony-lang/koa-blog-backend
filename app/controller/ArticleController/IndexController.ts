@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-21 11:31:17
  * @LastEditors: bin
- * @LastEditTime: 2023-11-23 11:35:27
+ * @LastEditTime: 2023-11-23 16:29:04
  * @objectDescription: 入口文件
  */
 import { Context } from 'koa'
@@ -11,6 +11,7 @@ import { ArticleModel } from '../../db/schema/SchemaArticle'
 import { TagModel } from '../../db/schema/SchemaTag'
 import type * as Article from './types/article'
 import { guid } from '../../utils/guid';
+import { paginate } from '../../utils/paginate';
 class ArticleIndexController {
     async createArticle(ctx: Context) {
         const requestBody = ctx.request['body'] as Article.ArticleType
@@ -48,8 +49,44 @@ class ArticleIndexController {
         }
     }
     async getArticleList(ctx: Context) {
-        const requestBody = ctx.request['body'] as Article.ArticleListType
-        
+        const requestBody = ctx.request['query'] as unknown as Article.ArticleListType
+        const { offset, limit, title = "", tags = "" } = requestBody
+        const count = await ArticleModel.find({
+            title: {
+                $regex: title
+            },
+        }).countDocuments()
+        const { total, totalPage, pageSize, current_page } = paginate(count, limit, offset)
+        const articleList = await ArticleModel.find({
+            title: {
+                $regex: title
+            }
+        })
+        .populate({
+            path: 'tags',
+            select: {
+                tag_name: 1,
+                _id: 0
+            }
+        })
+        .populate({
+            path: 'author',
+            select: {
+                username: 1,
+                _id: 0
+            }
+        })
+        .skip(offset - 1).limit(limit).exec()
+        if (!articleList) {
+            fail(ctx, '查询失败', null, 500)
+        }
+        success(ctx, {
+            data: articleList,
+            total,
+            totalPage,
+            pageSize,
+            current_page
+        })
     }
 }
 export default new ArticleIndexController
