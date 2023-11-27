@@ -1,4 +1,4 @@
-import { Context } from "koa";
+import { Context } from "koa"
 
 /**
  * 成功回调函数
@@ -7,12 +7,17 @@ import { Context } from "koa";
  * @param message 成功信息（可选，默认为"success"）
  * @param code 返回的状态码（可选，默认为200）
  */
-function success(ctx: Context, data: any, message: string ='success', code: number = 200) {
-  ctx.body = {
-    code,
-    data,
-    message,
-  };
+function success(
+	ctx: Context,
+	data: any,
+	message: string = "success",
+	code: number = 200
+) {
+	ctx.body = {
+		code,
+		data,
+		message,
+	}
 }
 
 /**
@@ -22,14 +27,16 @@ function success(ctx: Context, data: any, message: string ='success', code: numb
  * @param data 错误数据，默认为 null
  * @param code 错误码，默认为 500
  */
-function fail(ctx: Context, message: string = 'error', data: any = null, code: number = 500) {
-  ctx.body = {
-    code,
-    message,
-    data
-  };
+function fail(
+	ctx: Context,
+	message: string = "error",
+	data: any = null,
+	code: number = 500
+) {
+	ctx.body = {
+		code,
+		message,
+		data,
+	}
 }
-export {
-    success,
-    fail
-}
+export { success, fail }

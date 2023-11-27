@@ -6,15 +6,15 @@
  * @objectDescription: 入口文件
  */
 export interface UserListType {
-  username?: string
-  email?: string
-  offset: number
-  limit: number
+	username?: string
+	email?: string
+	offset: number
+	limit: number
 }
 export interface UserType {
-  username: string
-  email: string
-  password: string
-  nickname: string
-  usertype: number
+	username: string
+	email: string
+	password: string
+	nickname: string
+	usertype: number
 }

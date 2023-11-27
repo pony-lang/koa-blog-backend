@@ -1,3 +1,10 @@
+/*
+ * @Author: bin
+ * @Date: 2023-11-20 11:24:55
+ * @LastEditors: bin
+ * @LastEditTime: 2023-11-27 09:50:37
+ * @objectDescription: 入口文件
+ */
 import Schema, { Rules, Values } from "async-validator";
 import { Context } from "koa";
 
