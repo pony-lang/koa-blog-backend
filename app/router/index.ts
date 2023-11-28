@@ -40,5 +40,8 @@ router.get("/detailArticle", ArticleIndexController.detailArticle)
 
 // 分类模块
 router.get("/getTags", TagController.getTagsList)
+router.post("/createTag", TagController.createTag)
+router.post("/deleteTag", TagController.deleteTag)
+router.post("/updateTag", TagController.updateTag)
 
 export default router
