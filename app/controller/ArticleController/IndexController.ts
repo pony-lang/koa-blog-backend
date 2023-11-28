@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-21 11:31:17
  * @LastEditors: bin
- * @LastEditTime: 2023-11-23 17:19:58
+ * @LastEditTime: 2023-11-28 10:07:36
  * @objectDescription: 入口文件
  */
 import { Context } from "koa"
@@ -95,6 +95,92 @@ class ArticleIndexController {
 			pageSize,
 			current_page,
 		})
+	}
+	async updateArticle(ctx: Context) {
+		const requestBody = ctx.request["body"] as Article.updateType
+		const { title, content, userid, tags, id } = requestBody
+		if (!id ||!userid || !title ||!content ||!tags) {
+			fail(ctx, "请求参数错误", null, 400)
+			return
+		}
+		const existingTags = await TagModel.find({
+			tag_name: {
+				$in: tags,
+			},
+		}).exec()
+
+		// 已存在的标签
+		const existingTagIds = existingTags.map(tag => tag._id.toString())
+		console.log(existingTagIds, 'existingTagIds0');
+		
+		// 不存在的标签
+		const existingTagNames = existingTags.map(tag => tag.tag_name.toString())
+		const noTag = tags.filter(tag => !existingTagNames.includes(tag))
+		for (let i = 0; i < noTag.length; i++) {
+			let newTagRes = await TagModel.create({
+				tag_name: noTag[i],
+			})
+			existingTagIds.push(newTagRes._id.toString())
+		}
+		const articleRes = await ArticleModel.updateOne(
+			{
+				_id: id,
+			},
+			{
+				title,
+				content,
+				author: userid,
+				tags: existingTagIds,
+			}
+		)
+
+		if (articleRes) {
+			success(ctx, [], "更新成功", 200)
+		} else {
+			fail(ctx, "更新失败", null, 500)
+		}
+	}
+	async detailArticle(ctx: Context) {
+		const requestBody = ctx.request["query"] as unknown as Article.ArticleDetailType
+		const { id } = requestBody
+		if (!id) {
+			fail(ctx, "请求参数错误", null, 400)
+			return
+		}
+		const articleRes = await ArticleModel.findOne({
+			_id: id,
+		})
+			.populate({
+				path: "tags",
+				select: {
+					tag_name: 1,
+					_id: 0,
+				},
+			})
+			.exec()
+		if (!articleRes) {
+			fail(ctx, "查询失败", null, 500)
+			return
+		}
+		success(ctx, { data: articleRes })
+	}
+	async deleteArticle(ctx: Context) {
+		const requestBody = ctx.request["body"] as unknown as Article.ArticleDetailType
+		const { id } = requestBody
+		if (!id) {
+			fail(ctx, "请求参数错误", null, 400)
+			return
+		}
+		const articleRes = await ArticleModel.deleteOne(
+			{
+				_id: id,
+			}
+		)
+		if (articleRes) {
+			success(ctx, [], "删除成功", 200)
+		} else {
+			fail(ctx, "删除失败", null, 500)
+		}
 	}
 }
 export default new ArticleIndexController()

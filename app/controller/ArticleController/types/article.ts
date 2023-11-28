@@ -10,3 +10,13 @@ export interface ArticleListType {
 	title?: string
 	tags?: string
 }
+export interface ArticleDetailType {
+	id: string
+}
+export interface updateType{
+    title: string
+    content: string
+    tags: string[]
+    userid: string
+    id: string
+}

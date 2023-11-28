@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-01 15:37:59
  * @LastEditors: bin
- * @LastEditTime: 2023-11-27 10:00:18
+ * @LastEditTime: 2023-11-27 16:56:05
  * @objectDescription: 入口文件
  */
 /*
@@ -34,6 +34,9 @@ router.post("/createUser", IndexController.createUser)
 // 文章模块
 router.post("/createArticle", ArticleIndexController.createArticle)
 router.get("/getArticle", ArticleIndexController.getArticleList)
+router.post("/updateArticle", ArticleIndexController.updateArticle)
+router.post("/deleteArticle", ArticleIndexController.deleteArticle)
+router.get("/detailArticle", ArticleIndexController.detailArticle)
 
 // 分类模块
 router.get("/getTags", TagController.getTagsList)
