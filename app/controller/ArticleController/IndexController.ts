@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-21 11:31:17
  * @LastEditors: bin
- * @LastEditTime: 2023-11-28 10:07:36
+ * @LastEditTime: 2023-12-01 10:29:16
  * @objectDescription: 入口文件
  */
 import { Context } from "koa"
@@ -12,6 +12,7 @@ import { TagModel } from "../../db/schema/SchemaTag"
 import type * as Article from "./types/article"
 import { guid } from "../../utils/guid"
 import { paginate } from "../../utils/paginate"
+import mongoose from "mongoose"
 class ArticleIndexController {
 	async createArticle(ctx: Context) {
 		const requestBody = ctx.request["body"] as Article.ArticleType
@@ -99,7 +100,7 @@ class ArticleIndexController {
 	async updateArticle(ctx: Context) {
 		const requestBody = ctx.request["body"] as Article.updateType
 		const { title, content, userid, tags, id } = requestBody
-		if (!id ||!userid || !title ||!content ||!tags) {
+		if (!id || !userid || !title || !content || !tags) {
 			fail(ctx, "请求参数错误", null, 400)
 			return
 		}
@@ -111,8 +112,6 @@ class ArticleIndexController {
 
 		// 已存在的标签
 		const existingTagIds = existingTags.map(tag => tag._id.toString())
-		console.log(existingTagIds, 'existingTagIds0');
-		
 		// 不存在的标签
 		const existingTagNames = existingTags.map(tag => tag.tag_name.toString())
 		const noTag = tags.filter(tag => !existingTagNames.includes(tag))
@@ -141,23 +140,120 @@ class ArticleIndexController {
 		}
 	}
 	async detailArticle(ctx: Context) {
-		const requestBody = ctx.request["query"] as unknown as Article.ArticleDetailType
+		const requestBody = ctx.request[
+			"query"
+		] as unknown as Article.ArticleDetailType
 		const { id } = requestBody
 		if (!id) {
 			fail(ctx, "请求参数错误", null, 400)
 			return
 		}
-		const articleRes = await ArticleModel.findOne({
-			_id: id,
-		})
-			.populate({
-				path: "tags",
-				select: {
-					tag_name: 1,
-					_id: 0,
+		const articleRes = await ArticleModel.aggregate([
+			{
+				$match: {
+					_id: new mongoose.Types.ObjectId(id),
 				},
-			})
-			.exec()
+			},
+			{
+				$lookup: {
+					from: "users",
+					localField: "author",
+					foreignField: "_id",
+					as: "author",
+				},
+			},
+			{
+				$lookup: {
+					from: "tags",
+					localField: "tags",
+					foreignField: "_id",
+					as: "category",
+				},
+			},
+			{
+				$lookup: {
+					from: "comments",
+					localField: "_id",
+					foreignField: "article_id",
+					as: "comments",
+				},
+			},
+			{
+				$lookup: {
+					from: "users",
+					localField: "comments.user_id",
+					foreignField: "_id",
+					as: "commentsAuthor",
+				},
+			},
+			{
+				$project: {
+					_id: 1,
+					title: 1,
+					content: 1,
+					tags: {
+						$map: {
+							input: "$category",
+							as: "category",
+							in: {
+								tagName: "$$category.tag_name",
+								tagId: "$$category._id",
+							},
+						},
+					},
+					author: {
+						username: {
+							$arrayElemAt: [
+								"$author.username",
+								0,
+							],
+						},
+						nickname: {
+							$arrayElemAt: [
+								"$author.nickname",
+								0,
+							],
+						},
+						userid: {
+							$arrayElemAt: [
+								"$author._id",
+								0,
+							],
+						},
+					},
+					comments: {
+						$map: {
+							input: "$comments",
+							as: "comment",
+							in: {
+								content: "$$comment.content",
+								commentId: "$$comment._id",
+								commentsAuthor: {
+									commentUserName: {
+										$arrayElemAt: [
+											"$commentsAuthor.username",
+											0,
+										],
+									},
+									commentUserid: {
+										$arrayElemAt: [
+											"$commentsAuthor._id",
+											0,
+										],
+									},
+									commentNickname: {
+										$arrayElemAt: [
+											"$commentsAuthor.nickname",
+											0,
+										],
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		])
 		if (!articleRes) {
 			fail(ctx, "查询失败", null, 500)
 			return
@@ -165,17 +261,17 @@ class ArticleIndexController {
 		success(ctx, { data: articleRes })
 	}
 	async deleteArticle(ctx: Context) {
-		const requestBody = ctx.request["body"] as unknown as Article.ArticleDetailType
+		const requestBody = ctx.request[
+			"body"
+		] as unknown as Article.ArticleDetailType
 		const { id } = requestBody
 		if (!id) {
 			fail(ctx, "请求参数错误", null, 400)
 			return
 		}
-		const articleRes = await ArticleModel.deleteOne(
-			{
-				_id: id,
-			}
-		)
+		const articleRes = await ArticleModel.deleteOne({
+			_id: id,
+		})
 		if (articleRes) {
 			success(ctx, [], "删除成功", 200)
 		} else {
