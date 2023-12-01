@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-01 15:37:59
  * @LastEditors: bin
- * @LastEditTime: 2023-11-27 16:56:05
+ * @LastEditTime: 2023-12-01 11:14:00
  * @objectDescription: 入口文件
  */
 /*
@@ -18,7 +18,7 @@ import LoginController from "../controller/LoginController/LoginController"
 
 import ArticleIndexController from "../controller/ArticleController/IndexController"
 import TagController from "../controller/TagController/IndexController"
-
+import CommentController from "../controller/CommentController/IndexController"
 import AuthMiddleware from "../middleware/AuthMiddleware"
 const router = new koaRouter({ prefix: "/admin" })
 
@@ -44,4 +44,8 @@ router.post("/createTag", TagController.createTag)
 router.post("/deleteTag", TagController.deleteTag)
 router.post("/updateTag", TagController.updateTag)
 
+// 评论模块
+router.post("/createComment", CommentController.createComment)
+router.get("/getCommentList", CommentController.getCommentList)
+router.post("/updatedComment", CommentController.updatedComment)
 export default router
