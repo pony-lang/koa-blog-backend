@@ -130,6 +130,7 @@ class ArticleIndexController {
 				content,
 				author: userid,
 				tags: existingTagIds,
+				updateAt: new Date(),
 			}
 		)
 

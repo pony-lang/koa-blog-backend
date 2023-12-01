@@ -10,5 +10,9 @@ export const SchemaTag = new mongoose.Schema({
 		type: Date,
 		default: Date.now(),
 	},
+	updateAt: {
+		type: Date,
+		default: Date.now(),
+	},
 })
 export const TagModel = mongoose.model("Tag", SchemaTag)

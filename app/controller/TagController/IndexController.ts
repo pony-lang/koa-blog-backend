@@ -100,6 +100,7 @@ class TagController {
 			},
 			{
 				tag_name: tagName,
+				updateAt: new Date(),
 			}
 		)
 		if (!updateTag) {

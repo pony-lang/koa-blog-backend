@@ -19,6 +19,10 @@ export const ArticleSchema = new Schema({
 		type: Date,
 		default: Date.now,
 	},
+	updateAt: {
+		type: Date,
+		default: Date.now,
+	},
 	tags: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

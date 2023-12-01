@@ -33,6 +33,10 @@ export const UserSchema = new Schema({
 		type: Date,
 		default: Date.now,
 	},
+	updateAt: {
+		type: Date,
+		default: Date.now,
+	},
 	user_type: {
 		type: String,
 		require: true,
