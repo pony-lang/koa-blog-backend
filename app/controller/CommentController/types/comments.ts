@@ -4,7 +4,7 @@ export interface CommenstList {
 	content?: string
 	status?: string
     title?: string
-    author?: string
+    commentUserName?: string
 }
 export interface CreateComment {
 	userid: string

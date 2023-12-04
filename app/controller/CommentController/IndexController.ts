@@ -1,5 +1,7 @@
 import { Context } from "koa"
 import { CommentModel } from "../../db/schema/SchemaComment"
+import	{ ArticleModel } from "../../db/schema/SchemaArticle"
+import { UserModel } from "../../db/schema/SchemaUser"
 import { paginate } from "../../utils/paginate"
 import { fail, success } from "../../utils/response"
 import type * as Comments from "./types/comments"
@@ -31,14 +33,30 @@ class CommentsController {
 			status = "",
 			content = "",
 			title = "",
-			author = "",
+			commentUserName = "",
 		} = requestQuery
+		const articleRes = await ArticleModel.find({
+			title: {
+				$regex: title,
+			},
+		})
+		const userRes = await UserModel.find({
+			username: {
+				$regex: commentUserName,
+			},
+		})
 		const count = await CommentModel.find({
 			content: {
 				$regex: content,
 			},
 			status: {
 				$regex: status,
+			},
+			article_id: {
+				$in: articleRes.map((item) => item._id)
+			},
+			user_id: {
+				$in: userRes.map((item) => item._id)
 			},
 		}).countDocuments()
 		const { total, totalPage, pageSize, current_page } = paginate(
@@ -52,6 +70,12 @@ class CommentsController {
 			},
 			status: {
 				$regex: status,
+			},
+			article_id: {
+				$in: articleRes.map((item) => item._id)
+			},
+			user_id: {
+				$in: userRes.map((item) => item._id)
 			},
 		})
 			.skip(offset - 1)
