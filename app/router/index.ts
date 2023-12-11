@@ -30,6 +30,7 @@ router.use(AuthMiddleware)
 // 用户模块
 router.get("/userList", IndexController.getUserList)
 router.post("/createUser", IndexController.createUser)
+router.get("/getUserInfo", IndexController.getUserInfo)
 
 // 文章模块
 router.post("/createArticle", ArticleIndexController.createArticle)

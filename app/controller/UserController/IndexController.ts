@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-01 15:37:52
  * @LastEditors: bin
- * @LastEditTime: 2023-11-27 09:49:02
+ * @LastEditTime: 2023-12-11 08:50:23
  * @objectDescription: 入口文件
  */
 import { Context } from "koa"
@@ -86,6 +86,14 @@ class IndexController {
 			return
 		}
 		success(ctx, [])
+	}
+	async getUserInfo(ctx: Context) {
+		success(ctx, {
+			data: {
+				username: "admin",
+				roles: ["admin"]
+			}
+		})
 	}
 }
 
