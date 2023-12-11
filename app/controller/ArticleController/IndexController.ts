@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-21 11:31:17
  * @LastEditors: bin
- * @LastEditTime: 2023-12-01 10:29:16
+ * @LastEditTime: 2023-12-11 17:10:53
  * @objectDescription: 入口文件
  */
 import { Context } from "koa"
@@ -130,7 +130,7 @@ class ArticleIndexController {
 				content,
 				author: userid,
 				tags: existingTagIds,
-				updateAt: new Date(),
+				// updateAt: new Date(),
 			}
 		)
 

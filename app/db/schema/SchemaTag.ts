@@ -6,13 +6,18 @@ export const SchemaTag = new mongoose.Schema({
 		unique: true,
 		trim: true,
 	},
-	createAt: {
+	createdAt: {
 		type: Date,
 		default: Date.now(),
 	},
-	updateAt: {
+	updatedAt: {
 		type: Date,
 		default: Date.now(),
 	},
+},{
+	timestamps: {
+		type: Number,
+		currentTime: () => Math.floor(Date.now() / 1000)
+	}
 })
 export const TagModel = mongoose.model("Tag", SchemaTag)

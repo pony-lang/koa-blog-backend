@@ -104,7 +104,7 @@ class CommentsController {
 		}
 		const CommentRes = await CommentModel.findByIdAndUpdate(id, {
 			status,
-			updateAt: new Date(),
+			// updateAt: new Date(),
 		})
 		if (!CommentRes) {
 			fail(ctx, "更新评论失败")

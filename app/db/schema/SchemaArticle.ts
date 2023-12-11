@@ -15,11 +15,11 @@ export const ArticleSchema = new Schema({
 		ref: "User",
 		required: true,
 	},
-	createAt: {
+	createdAt: {
 		type: Date,
 		default: Date.now,
 	},
-	updateAt: {
+	updatedAt: {
 		type: Date,
 		default: Date.now,
 	},
@@ -29,5 +29,10 @@ export const ArticleSchema = new Schema({
 			ref: "Tag",
 		},
 	],
+},{
+	timestamps: {
+		type: Number,
+		currentTime: () => Math.floor(Date.now() / 1000)
+	}
 })
 export const ArticleModel = mongoose.model("Article", ArticleSchema)
