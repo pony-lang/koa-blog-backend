@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-16 15:45:45
  * @LastEditors: bin
- * @LastEditTime: 2023-11-17 09:27:31
+ * @LastEditTime: 2023-12-12 14:12:37
  * @objectDescription: 入口文件
  */
 export interface UserListType {
@@ -17,4 +17,7 @@ export interface UserType {
 	password: string
 	nickname: string
 	usertype: number
+}
+export interface deleteType {
+	id: string
 }

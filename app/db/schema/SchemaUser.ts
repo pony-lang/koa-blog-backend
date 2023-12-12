@@ -38,6 +38,7 @@ export const UserSchema = new Schema({
 	user_type: {
 		type: String,
 		require: true,
+		default: "1"
 	},
 },{
 	timestamps: {

@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-01 15:37:52
  * @LastEditors: bin
- * @LastEditTime: 2023-12-11 08:50:23
+ * @LastEditTime: 2023-12-12 14:11:52
  * @objectDescription: 入口文件
  */
 import { Context } from "koa"
@@ -39,6 +39,9 @@ class IndexController {
 			email: {
 				$regex: email,
 			},
+		},{
+			password: 0,
+			_v: 0
 		})
 			.skip(offset - 1)
 			.limit(limit)
@@ -94,6 +97,22 @@ class IndexController {
 				roles: ["admin"]
 			}
 		})
+	}
+	async deleteUser(ctx: Context) {
+		const requestBody = ctx.request["body"] as User.deleteType
+		const {id} = requestBody
+		if (!id) {
+			fail(ctx, "请求参数错误", null, 400)
+			return
+		}
+		const res = await UserModel.deleteOne({
+			user_id: id
+		})
+		if (!res) {
+			fail(ctx, "删除失败", null, 401)
+			return
+		}
+		success(ctx, [])
 	}
 }
 

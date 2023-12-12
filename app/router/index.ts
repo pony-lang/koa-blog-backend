@@ -31,6 +31,7 @@ router.use(AuthMiddleware)
 router.get("/userList", IndexController.getUserList)
 router.post("/createUser", IndexController.createUser)
 router.get("/getUserInfo", IndexController.getUserInfo)
+router.post("/deleteUser", IndexController.deleteUser)
 
 // 文章模块
 router.post("/createArticle", ArticleIndexController.createArticle)
