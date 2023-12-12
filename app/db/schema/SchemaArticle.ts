@@ -16,12 +16,10 @@ export const ArticleSchema = new Schema({
 		required: true,
 	},
 	createdAt: {
-		type: Date,
-		default: Date.now,
+		type: Number,
 	},
 	updatedAt: {
-		type: Date,
-		default: Date.now,
+		type: Number,
 	},
 	tags: [
 		{
