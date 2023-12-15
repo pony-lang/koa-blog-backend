@@ -7,12 +7,10 @@ export const SchemaTag = new mongoose.Schema({
 		trim: true,
 	},
 	createdAt: {
-		type: Date,
-		default: Date.now(),
+		type: Number,
 	},
 	updatedAt: {
-		type: Date,
-		default: Date.now(),
+		type: Number,
 	},
 },{
 	timestamps: {

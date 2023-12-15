@@ -1,6 +1,6 @@
 import { Context } from "koa"
 import { CommentModel } from "../../db/schema/SchemaComment"
-import	{ ArticleModel } from "../../db/schema/SchemaArticle"
+import { ArticleModel } from "../../db/schema/SchemaArticle"
 import { UserModel } from "../../db/schema/SchemaUser"
 import { paginate } from "../../utils/paginate"
 import { fail, success } from "../../utils/response"
@@ -53,10 +53,10 @@ class CommentsController {
 				$regex: status,
 			},
 			article_id: {
-				$in: articleRes.map((item) => item._id)
+				$in: articleRes.map(item => item._id),
 			},
 			user_id: {
-				$in: userRes.map((item) => item._id)
+				$in: userRes.map(item => item._id),
 			},
 		}).countDocuments()
 		const { total, totalPage, pageSize, current_page } = paginate(
@@ -72,12 +72,14 @@ class CommentsController {
 				$regex: status,
 			},
 			article_id: {
-				$in: articleRes.map((item) => item._id)
+				$in: articleRes.map(item => item._id),
 			},
 			user_id: {
-				$in: userRes.map((item) => item._id)
+				$in: userRes.map(item => item._id),
 			},
 		})
+			.populate("user_id", "username nickname -_id")
+			.populate("article_id", "title -_id")
 			.skip(offset - 1)
 			.limit(limit)
 			.exec()
