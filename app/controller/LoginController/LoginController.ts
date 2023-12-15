@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-10 14:42:14
  * @LastEditors: bin
- * @LastEditTime: 2023-12-12 11:33:24
+ * @LastEditTime: 2023-12-13 09:23:00
  * @objectDescription: 登录文件
  */
 import { Context, Request } from "koa"
@@ -32,7 +32,7 @@ class LoginController {
 		success(ctx, {
 			accesstoken: token,
 			username: res?.username,
-			userid: res?.user_id,
+			userid: res?._id,
 		})
 	}
 	async captcha(ctx: Context) {
