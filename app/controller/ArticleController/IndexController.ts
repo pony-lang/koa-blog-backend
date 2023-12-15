@@ -2,13 +2,14 @@
  * @Author: bin
  * @Date: 2023-11-21 11:31:17
  * @LastEditors: bin
- * @LastEditTime: 2023-12-11 17:10:53
+ * @LastEditTime: 2023-12-15 15:51:59
  * @objectDescription: 入口文件
  */
 import { Context } from "koa"
 import { fail, success } from "../../utils/response"
 import { ArticleModel } from "../../db/schema/SchemaArticle"
 import { TagModel } from "../../db/schema/SchemaTag"
+import { CommentModel } from "../../db/schema/SchemaComment"
 import type * as Article from "./types/article"
 import { guid } from "../../utils/guid"
 import { paginate } from "../../utils/paginate"
@@ -270,10 +271,13 @@ class ArticleIndexController {
 			fail(ctx, "请求参数错误", null, 400)
 			return
 		}
+		const commentRes = await CommentModel.deleteMany({
+			article_id: id,
+		})
 		const articleRes = await ArticleModel.deleteOne({
 			_id: id,
 		})
-		if (articleRes) {
+		if (articleRes && commentRes) {
 			success(ctx, [], "删除成功", 200)
 		} else {
 			fail(ctx, "删除失败", null, 500)
