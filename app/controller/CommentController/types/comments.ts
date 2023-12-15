@@ -15,3 +15,6 @@ export interface UpdateComment {
     id: string
     status: string
 }
+export interface DeleteComment {
+    id: string
+}

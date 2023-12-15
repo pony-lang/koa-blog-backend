@@ -1,3 +1,10 @@
+/*
+ * @Author: bin
+ * @Date: 2023-11-29 10:16:14
+ * @LastEditors: bin
+ * @LastEditTime: 2023-12-15 17:24:22
+ * @objectDescription: 入口文件
+ */
 import { Context } from "koa"
 import { CommentModel } from "../../db/schema/SchemaComment"
 import { ArticleModel } from "../../db/schema/SchemaArticle"
@@ -111,6 +118,19 @@ class CommentsController {
 			fail(ctx, "更新评论失败")
 		}
 		success(ctx, [], "更新评论成功")
+		return
+	}
+	async deleteComment(ctx: Context) {
+		const requestBody = ctx.request["body"] as Comments.DeleteComment
+		const { id } = requestBody
+		if (!id) {
+			fail(ctx, "请求参数错误")
+		}
+		const CommentRes = await CommentModel.findByIdAndDelete({_id: id})
+		if (!CommentRes) {
+			fail(ctx, "删除评论失败")
+		}
+		success(ctx, [], "删除评论成功")
 		return
 	}
 }

@@ -50,4 +50,5 @@ router.post("/updateTag", TagController.updateTag)
 router.post("/createComment", CommentController.createComment)
 router.get("/getCommentList", CommentController.getCommentList)
 router.post("/updatedComment", CommentController.updatedComment)
+router.post("/deleteComment", CommentController.deleteComment)
 export default router
