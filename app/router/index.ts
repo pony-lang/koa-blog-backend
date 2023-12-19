@@ -2,14 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-01 15:37:59
  * @LastEditors: bin
- * @LastEditTime: 2023-12-01 11:14:00
- * @objectDescription: 入口文件
- */
-/*
- * @Author: bin
- * @Date: 2023-11-01 15:37:59
- * @LastEditors: bin
- * @LastEditTime: 2023-11-01 15:44:56
+ * @LastEditTime: 2023-12-19 17:10:55
  * @objectDescription: 入口文件
  */
 import koaRouter from "koa-router"
@@ -51,4 +44,5 @@ router.post("/createComment", CommentController.createComment)
 router.get("/getCommentList", CommentController.getCommentList)
 router.post("/updatedComment", CommentController.updatedComment)
 router.post("/deleteComment", CommentController.deleteComment)
+router.post("/replyComment", CommentController.replyComment)
 export default router

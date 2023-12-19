@@ -18,3 +18,10 @@ export interface UpdateComment {
 export interface DeleteComment {
     id: string
 }
+export interface ReplyComment {
+    id: string
+    content: string
+    userid: string
+    commentid: string
+    articleid: string
+}

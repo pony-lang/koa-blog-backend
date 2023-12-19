@@ -2,11 +2,12 @@
  * @Author: bin
  * @Date: 2023-11-29 10:16:14
  * @LastEditors: bin
- * @LastEditTime: 2023-12-15 17:24:22
+ * @LastEditTime: 2023-12-19 20:31:12
  * @objectDescription: 入口文件
  */
 import { Context } from "koa"
 import { CommentModel } from "../../db/schema/SchemaComment"
+import { CommentReplyModel } from "../../db/schema/SchemaCommentReply"
 import { ArticleModel } from "../../db/schema/SchemaArticle"
 import { UserModel } from "../../db/schema/SchemaUser"
 import { paginate } from "../../utils/paginate"
@@ -18,6 +19,7 @@ class CommentsController {
 		const { content, userid, articleid } = requestBody
 		if (!content || !userid || !articleid) {
 			fail(ctx, "评论失败")
+			return
 		}
 		const CommentRes = CommentModel.create({
 			content,
@@ -26,6 +28,7 @@ class CommentsController {
 		})
 		if (!CommentRes) {
 			fail(ctx, "评论失败")
+			return
 		}
 		success(ctx, [], "评论成功")
 		return
@@ -92,6 +95,7 @@ class CommentsController {
 			.exec()
 		if (!commentsList) {
 			fail(ctx, "获取评论失败", null, 500)
+			return
 		}
 		success(ctx, {
 			data: commentsList,
@@ -107,15 +111,18 @@ class CommentsController {
 		const { id, status } = requestBody
 		if (!id || !status) {
 			fail(ctx, "请求参数错误")
+			return
 		}
 		if (status != "1" && status != "2") {
 			fail(ctx, "审核状态错误")
+			return
 		}
 		const CommentRes = await CommentModel.findByIdAndUpdate(id, {
 			status,
 		})
 		if (!CommentRes) {
 			fail(ctx, "更新评论失败")
+			return
 		}
 		success(ctx, [], "更新评论成功")
 		return
@@ -125,12 +132,32 @@ class CommentsController {
 		const { id } = requestBody
 		if (!id) {
 			fail(ctx, "请求参数错误")
+			return
 		}
 		const CommentRes = await CommentModel.findByIdAndDelete({_id: id})
 		if (!CommentRes) {
 			fail(ctx, "删除评论失败")
+			return
 		}
 		success(ctx, [], "删除评论成功")
+		return
+	}
+	async replyComment(ctx: Context) {
+		const requestBody = ctx.request["body"] as Comments.ReplyComment
+		const { content, userid, commentid, articleid } = requestBody
+		if (!content ||!userid ||!commentid ||!articleid) {
+			return fail(ctx, "参数错误")
+		}
+		const ReplyCommentRes = CommentReplyModel.create({
+			content,
+			user_id: userid,
+			reply_id: commentid,
+			article_id: articleid
+		})
+		if (!ReplyCommentRes) {
+			return fail(ctx, "回复失败")
+		}
+		success(ctx, [], "回复成功")
 		return
 	}
 }

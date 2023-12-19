@@ -28,6 +28,7 @@ class TagController {
 			.exec()
 		if (!tagsList) {
 			fail(ctx, "查询失败", null, 500)
+			return
 		}
 		success(ctx, {
 			data: tagsList,
@@ -42,18 +43,21 @@ class TagController {
 		const { tagName } = requestBody
 		if (!tagName) {
 			fail(ctx, "标签名称不能为空", null, 500)
+			return
 		}
 		const tag = await TagModel.findOne({
 			tag_name: tagName,
 		})
 		if (tag) {
 			fail(ctx, "标签已存在", null, 500)
+			return
 		}
 		const newTag = TagModel.create({
 			tag_name: tagName,
 		})
 		if (!newTag) {
 			fail(ctx, "创建失败", null, 500)
+			return
 		}
 		success(ctx, {
 			data: [],
@@ -64,18 +68,21 @@ class TagController {
 		const { id } = requestBody
 		if (!id) {
 			fail(ctx, "请求参数错误", null, 500)
+			return
 		}
 		const tag = await TagModel.findOne({
 			_id: id,
 		})
 		if (!tag) {
 			fail(ctx, "标签不存在", null, 500)
+			return 
 		}
 		const deleteTag = await TagModel.deleteOne({
 			_id: id,
 		})
 		if (!deleteTag) {
 			fail(ctx, "删除失败", null, 500)
+			return
 		}
 		success(ctx, {
 			data: [],
@@ -86,6 +93,7 @@ class TagController {
 		const { id, tagName } = requestBody
 		if (!id || !tagName) {
 			fail(ctx, "请求参数错误", null, 500)
+			return 
 		}
 		const tag = await TagModel.findOne({
 			_id: id,
@@ -105,6 +113,7 @@ class TagController {
 		)
 		if (!updateTag) {
 			fail(ctx, "更新失败", null, 500)
+			return 
 		}
 		success(ctx, {
 			data: [],

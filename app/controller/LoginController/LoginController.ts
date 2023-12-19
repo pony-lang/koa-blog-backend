@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-10 14:42:14
  * @LastEditors: bin
- * @LastEditTime: 2023-12-13 09:23:00
+ * @LastEditTime: 2023-12-19 20:53:39
  * @objectDescription: 登录文件
  */
 import { Context, Request } from "koa"
@@ -27,6 +27,7 @@ class LoginController {
 		}
 		if(res.user_type === "1") {
 			fail(ctx, "请使用管理员账号登录", null, 401)
+			return
 		}
 		const token = sign({ username: res?.username })
 		success(ctx, {
