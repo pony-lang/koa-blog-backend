@@ -40,7 +40,7 @@ router.post("/updateArticle", ArticleIndexController.updateArticle)
 router.post("/deleteArticle", ArticleIndexController.deleteArticle)
 router.get("/detailArticle", ArticleIndexController.detailArticle)
 
-// 分类模块
+// 标签模块
 router.get("/getTags", TagController.getTagsList)
 router.post("/createTag", TagController.createTag)
 router.post("/deleteTag", TagController.deleteTag)
