@@ -22,6 +22,5 @@ export interface ReplyComment {
     id: string
     content: string
     userid: string
-    commentid: string
-    articleid: string
+    replyCommentId: string
 }

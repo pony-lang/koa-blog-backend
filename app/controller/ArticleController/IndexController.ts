@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-21 11:31:17
  * @LastEditors: bin
- * @LastEditTime: 2023-12-19 20:55:59
+ * @LastEditTime: 2024-01-11 10:41:42
  * @objectDescription: 入口文件
  */
 import { Context } from "koa"
@@ -192,6 +192,22 @@ class ArticleIndexController {
 				},
 			},
 			{
+				$lookup: {
+					from: "commentsreplies",
+					localField: "reply_id",
+					foreignField: "comments._id",
+					as: "commentsReply",
+				},
+			},
+			{
+				$lookup: {
+					from: "users",
+					localField: "commentsReply.user_id",
+					foreignField: "_id",
+					as: "commentsReplyAuthor",
+				},
+			},
+			{
 				$project: {
 					_id: 1,
 					title: 1,
@@ -208,51 +224,55 @@ class ArticleIndexController {
 					},
 					author: {
 						username: {
-							$arrayElemAt: [
-								"$author.username",
-								0,
-							],
+							$arrayElemAt: ["$author.username", 0],
 						},
 						nickname: {
-							$arrayElemAt: [
-								"$author.nickname",
-								0,
-							],
+							$arrayElemAt: ["$author.nickname", 0],
 						},
 						userid: {
-							$arrayElemAt: [
-								"$author._id",
-								0,
-							],
+							$arrayElemAt: ["$author._id", 0],
 						},
 					},
 					comments: {
 						$map: {
 							input: "$comments",
-							as: "comment",
+							as: "item",
 							in: {
-								content: "$$comment.content",
-								commentId: "$$comment._id",
+								content: "$$item.content",
+								commentId: "$$item._id",
 								commentsAuthor: {
 									commentUserName: {
-										$arrayElemAt: [
-											"$commentsAuthor.username",
-											0,
-										],
+										$arrayElemAt: ["$commentsAuthor.username", 0],
 									},
 									commentUserid: {
-										$arrayElemAt: [
-											"$commentsAuthor._id",
-											0,
-										],
+										$arrayElemAt: ["$commentsAuthor._id", 0],
 									},
 									commentNickname: {
-										$arrayElemAt: [
-											"$commentsAuthor.nickname",
-											0,
-										],
+										$arrayElemAt: ["$commentsAuthor.nickname", 0],
 									},
 								},
+								// commentReply: {
+									// $filter: {
+									// 	input: "$commentsReply",
+									// 	as: "reply",
+									// 	cond: {
+									// 		$eq: ["$$reply.reply_id", "$$item._id"],
+									// 	}
+									// },
+									// content: "$commentReply.content",
+									// commentId: "$commentReply._id",
+									// commentsReplyAuthor: {
+									// 	commentUserName: {
+									// 		$arrayElemAt: ["$commentsReplyAuthor.username", 0],
+									// 	},
+									// 	commentUserid: {
+									// 		$arrayElemAt: ["$commentsReplyAuthor._id", 0],
+									// 	},
+									// 	commentNickname: {
+									// 		$arrayElemAt: ["$commentsReplyAuthor.nickname", 0],
+									// 	},
+									// },
+								// },
 							},
 						},
 					},

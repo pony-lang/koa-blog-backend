@@ -9,10 +9,6 @@ export const CommentReplySchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Comment",
         },
-        arcitle_id: {
-            type: Schema.Types.ObjectId,
-            ref: "Article",
-        },
         status: {
 			type: String,
 			default: "1",
@@ -39,4 +35,4 @@ export const CommentReplySchema = new Schema(
 		},
 	}
 )
-export const CommentReplyModel = mongoose.model("CommentsReplay", CommentReplySchema)
+export const CommentReplyModel = mongoose.model("CommentsReply", CommentReplySchema)

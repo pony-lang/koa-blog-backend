@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2023-11-29 10:16:14
  * @LastEditors: bin
- * @LastEditTime: 2023-12-19 20:31:12
+ * @LastEditTime: 2023-12-19 21:30:20
  * @objectDescription: 入口文件
  */
 import { Context } from "koa"
@@ -144,15 +144,14 @@ class CommentsController {
 	}
 	async replyComment(ctx: Context) {
 		const requestBody = ctx.request["body"] as Comments.ReplyComment
-		const { content, userid, commentid, articleid } = requestBody
-		if (!content ||!userid ||!commentid ||!articleid) {
+		const { content, userid, replyCommentId } = requestBody
+		if (!content ||!userid ||!replyCommentId ) {
 			return fail(ctx, "参数错误")
 		}
 		const ReplyCommentRes = CommentReplyModel.create({
 			content,
 			user_id: userid,
-			reply_id: commentid,
-			article_id: articleid
+			reply_id: replyCommentId,
 		})
 		if (!ReplyCommentRes) {
 			return fail(ctx, "回复失败")
